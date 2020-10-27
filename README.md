@@ -2,13 +2,20 @@
 ## add below code in your express project to record server req/res
 ```
 app.use(function (req, res, next) {
-  const dateNow = new Date(Date.now()).toLocaleString('en-US', { hour12: false })
-  console.log(dateNow, '|', req.method, 'from', req.originalUrl)
-  next();
-});
+  const reqDate = new Date(Date.now())
+  const reqDateFormat = reqDate.toLocaleString('en-US', { hour12: false })
+
+  res.once('finish', () => {
+    const resDate = new Date(Date.now())
+
+    console.log(reqDateFormat, '|', req.method, 'from', req.originalUrl, '|', 'total time:', (resDate - reqDate) + 'ms')
+  })
+
+  next()
+})
 ```
 
 ## server log will show as below example
 ```
-10/27/2020, 14:23:04 | GET from /
+10/27/2020, 15:56:42 | GET from /new | total time: 9ms
 ```
