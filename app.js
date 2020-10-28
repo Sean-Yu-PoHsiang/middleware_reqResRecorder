@@ -3,13 +3,12 @@ const app = express()
 const port = 3000
 
 app.use(function (req, res, next) {
-  const reqDate = new Date(Date.now())
-  const reqDateFormat = reqDate.toLocaleString('en-US', { hour12: false })
+  const reqDate = new Date()
 
   res.once('finish', () => {
-    const resDate = new Date(Date.now())
+    const totalTime = new Date() - reqDate
 
-    console.log(reqDateFormat, '|', req.method, 'from', req.originalUrl, '|', 'total time:', (resDate - reqDate) + 'ms')
+    console.log(reqDate.toLocaleString('en-US', { hour12: false }), '|', req.method, 'from', req.originalUrl, '|', 'total time:', totalTime + 'ms')
   })
 
   next()
